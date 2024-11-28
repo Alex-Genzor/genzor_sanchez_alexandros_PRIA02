@@ -1802,6 +1802,8 @@ MonoBehaviour:
   RotateSpeed: 75
   JumpVelocity: 5
   DistanceToGround: 0.1
+  Bullet: {fileID: 8681634585049895692, guid: cf33c29d7cb280f48b89767ba0dbd49e, type: 3}
+  BulletSpeed: 100
   GroundLayer:
     serializedVersion: 2
     m_Bits: 64

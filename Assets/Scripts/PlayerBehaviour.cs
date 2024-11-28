@@ -9,6 +9,8 @@ public class PlayerBehaviour : MonoBehaviour
     public float RotateSpeed = 75f;
     public float JumpVelocity = 5f; // <- funcion salto
     public float DistanceToGround = 0.1f; // <- fix salto
+    public GameObject Bullet; // <- bullet shoot
+    public float BulletSpeed = 100f; // <- bullet shoot
 
     public LayerMask GroundLayer; // <- fix salto
 
@@ -16,6 +18,7 @@ public class PlayerBehaviour : MonoBehaviour
     private float _hInput;
     private bool _isJumping; // <- funcion salto
     private CapsuleCollider _collider; // <- fix salto
+    private bool _isShooting; // <- bullet shoot
 
     private Rigidbody _rigidBody;
     
@@ -37,7 +40,8 @@ public class PlayerBehaviour : MonoBehaviour
         this.transform.Rotate(Vector3.up * _hInput * Time.deltaTime);
 
         _isJumping |= Input.GetKeyDown(KeyCode.J); // <- 28/11/2024
-        
+        _isShooting |= Input.GetKeyDown(KeyCode.Space); // <- bullet shoot
+
     }
     
     void FixedUpdate()
@@ -57,6 +61,20 @@ public class PlayerBehaviour : MonoBehaviour
 
         _isJumping = false;
         // funcion salto /\/\/\/\
+
+        // funcion disparar \/\/\/\/
+        if (_isShooting)
+        {
+            GameObject newBullet = Instantiate(Bullet, this.transform.position +
+                new Vector3(0, 0, 1), this.transform.rotation);
+            Rigidbody BulletRB = newBullet.GetComponent<Rigidbody>();
+
+            BulletRB.velocity = this.transform.forward * BulletSpeed;
+
+        }
+
+        _isShooting = false;
+        // funcion disparar /\/\/\/\
 
     }
 
