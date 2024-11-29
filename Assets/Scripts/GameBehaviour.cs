@@ -21,4 +21,29 @@ public class GameBehaviour : MonoBehaviour
         
     }
 
+    // getters & setters \/\/\/\/
+    public int Items
+    {
+        get { return _itemsCollected; }
+        set
+        {
+            _itemsCollected = value;
+            Debug.LogFormat("Items: {0}", _itemsCollected);
+            
+        }
+        
+    }
+
+    public int HP
+    {
+        get { return _playerHP; }
+        set
+        {
+            _playerHP = value;
+            Debug.LogFormat("HP: {0}", _playerHP);
+            
+        }
+        
+    }
+    // getters & setters /\/\/\/\
 }

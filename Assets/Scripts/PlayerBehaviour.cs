@@ -5,14 +5,15 @@ using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-    public float MoveSpeed = 10f;
-    public float RotateSpeed = 75f;
-    public float JumpVelocity = 5f; // <- funcion salto
-    public float DistanceToGround = 0.1f; // <- fix salto
-    public GameObject Bullet; // <- bullet shoot
-    public float BulletSpeed = 100f; // <- bullet shoot
+    public float moveSpeed = 10f;
+    public float rotateSpeed = 75f;
+    public float jumpVelocity = 5f; // <- funcion salto
+    public float distanceToGround = 0.1f; // <- fix salto
+    public GameObject bullet; // <- bullet shoot
+   
+    public float bulletSpeed = 100f; // <- bullet shoot
 
-    public LayerMask GroundLayer; // <- fix salto
+    public LayerMask groundLayer; // <- fix salto
 
     private float _vInput;
     private float _hInput;
@@ -33,11 +34,11 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _vInput = Input.GetAxis("Vertical") * MoveSpeed;
-        _hInput = Input.GetAxis("Horizontal") * RotateSpeed;
+        _vInput = Input.GetAxis("Vertical") * moveSpeed;
+        _hInput = Input.GetAxis("Horizontal") * rotateSpeed;
         
-        this.transform.Translate(Vector3.forward * _vInput * Time.deltaTime);
-        this.transform.Rotate(Vector3.up * _hInput * Time.deltaTime);
+        this.transform.Translate(Vector3.forward * (_vInput * Time.deltaTime));
+        this.transform.Rotate(Vector3.up * (_hInput * Time.deltaTime));
 
         _isJumping |= Input.GetKeyDown(KeyCode.J); // <- 28/11/2024
         _isShooting |= Input.GetKeyDown(KeyCode.Space); // <- bullet shoot
@@ -49,13 +50,14 @@ public class PlayerBehaviour : MonoBehaviour
         Vector3 rotation = Vector3.up * _hInput;
         Quaternion angleRot = Quaternion.Euler(rotation * Time.fixedDeltaTime);
         
-        _rigidBody.MovePosition(this.transform.position + this.transform.forward * _vInput * Time.fixedDeltaTime);
+        _rigidBody.MovePosition(this.transform.position + this.transform.forward * 
+            (_vInput * Time.fixedDeltaTime));
         _rigidBody.MoveRotation(_rigidBody.rotation * angleRot);
 
         // funcion salto \/\/\/\/
         if (_isJumping && IsGrounded()) // <- IsGrounded() = fix salto
         {
-            _rigidBody.AddForce(Vector3.up * JumpVelocity, ForceMode.Impulse);
+            _rigidBody.AddForce(Vector3.up * jumpVelocity, ForceMode.Impulse);
 
         }
 
@@ -65,11 +67,11 @@ public class PlayerBehaviour : MonoBehaviour
         // funcion disparar \/\/\/\/
         if (_isShooting)
         {
-            GameObject newBullet = Instantiate(Bullet, this.transform.position +
+            GameObject newBullet = Instantiate(bullet, this.transform.position +
                 new Vector3(0, 0, 1), this.transform.rotation);
-            Rigidbody BulletRB = newBullet.GetComponent<Rigidbody>();
+            Rigidbody bulletRigidBody = newBullet.GetComponent<Rigidbody>();
 
-            BulletRB.velocity = this.transform.forward * BulletSpeed;
+            bulletRigidBody.velocity = this.transform.forward * bulletSpeed;
 
         }
 
@@ -85,7 +87,7 @@ public class PlayerBehaviour : MonoBehaviour
             _collider.bounds.min.y, _collider.bounds.center.z);
 
         bool grounded = Physics.CheckCapsule(_collider.bounds.center,
-            capsuleBottom, DistanceToGround, GroundLayer,
+            capsuleBottom, distanceToGround, groundLayer,
             QueryTriggerInteraction.Ignore);
 
         return grounded;
