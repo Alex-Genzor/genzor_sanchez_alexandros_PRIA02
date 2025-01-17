@@ -8,13 +8,13 @@ using UnityEngine.SceneManagement;
 
 public class GameBehaviour : MonoBehaviour
 {
-    // hud \/\/\/\/
-    public int maxItems = 4;
+        public int maxItems = 4;
     public TMP_Text healthTxt;
     public TMP_Text itemTxt;
     public TMP_Text progressTxt;
-    // hud /\/\/\/\
-    public Button winBtn; // <- boton victoria
+    
+    public Button winBtn;
+    public Button lossBtn; // condicion derrota 1
     
     private int _itemsCollected = 0;
     private int _playerHP = 10;
@@ -22,8 +22,8 @@ public class GameBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        itemTxt.text += _itemsCollected; // <- hud
-        healthTxt.text += _playerHP; // <- hud
+        itemTxt.text += _itemsCollected; 
+        healthTxt.text += _playerHP; 
 
     }
 
@@ -34,7 +34,6 @@ public class GameBehaviour : MonoBehaviour
         
     }
 
-    // getters & setters \/\/\/\/
     public int Items
     {
         get { return _itemsCollected; }
@@ -43,14 +42,13 @@ public class GameBehaviour : MonoBehaviour
             _itemsCollected = value;
             Debug.LogFormat("Items: {0}", _itemsCollected);
 
-            // hud \/\/\/\/
             itemTxt.text = "Items: " + Items;
 
             if (_itemsCollected >= maxItems)
             {
                 progressTxt.text = "All items have been collected";
-                winBtn.gameObject.SetActive(true); // <- boton victoria
-                Time.timeScale = 0f; // <- pausa y reinicio juego
+                winBtn.gameObject.SetActive(true); 
+                Time.timeScale = 0f; 
 
             } else
             {
@@ -58,13 +56,11 @@ public class GameBehaviour : MonoBehaviour
                                    " Items remaining.";
 
             }
-            // hud /\/\/\/\
 
         }
         
     }
 
-    // getters & setters \/\/\/\/
     public int HP
     {
         get { return _playerHP; }
@@ -75,18 +71,32 @@ public class GameBehaviour : MonoBehaviour
             
             healthTxt.text = "HP: " + HP; // <- hud
             
+            // condicion derrota 1 \/\/\/\/
+            if (_playerHP <= 0)
+            {
+                progressTxt.text = "You want to have your own vendetta?";
+                lossBtn.gameObject.SetActive(true);
+
+                Time.timeScale = 0;
+
+            }
+            else
+            {
+                progressTxt.text = "Owie! :(";
+
+            }
+            
+            // condicion derrota 1 /\/\/\/\
+            
         }
         
     }
-    // getters & setters /\/\/\/\
 
-    // pausa y reinicio juego \/\/\/\/
     public void RestartScene()
     {
         SceneManager.LoadScene(0);
         Time.timeScale = 1f;
 
     }
-    // pausa y reinicio juego /\/\/\/\
     
 }

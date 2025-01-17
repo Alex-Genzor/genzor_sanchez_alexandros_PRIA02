@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,8 @@ public class EnemyBehaviour : MonoBehaviour
     private NavMeshAgent _agent;
     
     // moviendo agentes enemigos 2 /\/\/\/\
+
+    private int _lives = 3; // colisiones con bala 1
     
     // Start is called before the first frame update
     void Start()
@@ -92,5 +95,37 @@ public class EnemyBehaviour : MonoBehaviour
         }
         
     }
+
+    // colisiones con bala 1 \/\/\/\/
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.name == "Bullet(Clone)")
+        {
+            EnemyLives--;
+            Debug.Log("OUCH!");
+
+        }
+        
+    }
+    
+    public int EnemyLives
+    {
+        get { return _lives; }
+        private set
+        {
+            _lives = value;
+
+            if (_lives <= 0)
+            {
+                Destroy(this.gameObject);
+                Debug.Log("I'm down!");
+                
+            }
+
+        }
+
+    }
+    
+    // colisiones con bala 1 /\/\/\/\
 
 }
