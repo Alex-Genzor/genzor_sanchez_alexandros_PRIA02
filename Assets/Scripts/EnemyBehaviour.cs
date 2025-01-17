@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
+    // moviendo agentes enemigos \/\/\/\/
+    public Transform patrolRoute;
+    public List<Transform> locations;
+    
+    // moviendo agentes enemigos /\/\/\/\
+    
     // Start is called before the first frame update
     void Start()
     {
-
+        InitialitePatrolRoute(); // moviendo agentes enemigos
         
     }
 
@@ -17,6 +23,18 @@ public class EnemyBehaviour : MonoBehaviour
 
         
     }
+    
+    // moviendo agentes enemigos \/\/\/\/
+    void InitialitePatrolRoute()
+    {
+        foreach (Transform child in patrolRoute)
+        {
+            locations.Add(child);
+            
+        }
+        
+    }
+    // moviendo agentes enemigos /\/\/\/\
 
     private void OnTriggerEnter(Collider other)
     {
