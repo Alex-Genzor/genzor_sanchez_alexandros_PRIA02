@@ -11,6 +11,8 @@ public class EnemyBehaviour : MonoBehaviour
     
     // moviendo agentes enemigos 1 /\/\/\/\
 
+    public Transform player; // busqueda de jugador 1
+
     // moviendo agentes enemigos 2 \/\/\/\/
     private int _locationIndex = 0;
     private NavMeshAgent _agent;
@@ -25,7 +27,9 @@ public class EnemyBehaviour : MonoBehaviour
         InitialitePatrolRoute(); // moviendo agentes enemigos 1
         
         MoveToNextPatrolLocation(); // moviendo agentes enemigos 2
-        
+
+        player = GameObject.Find("Player").transform; // busqueda de jugador 1
+
     }
 
     // Update is called once per frame
@@ -72,6 +76,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if(other.name == "Player")
         {
+            _agent.destination = player.position; // busqueda de jugador 1
             Debug.Log("Enemy on sight! KILL KILL KILL! WRAHHHH!!!");
 
         }

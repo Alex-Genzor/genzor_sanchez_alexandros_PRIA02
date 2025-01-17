@@ -7,27 +7,31 @@ public class PlayerBehaviour : MonoBehaviour
 {
     public float moveSpeed = 10f;
     public float rotateSpeed = 75f;
-    public float jumpVelocity = 5f; // <- funcion salto
-    public float distanceToGround = 0.1f; // <- fix salto
-    public GameObject bullet; // <- bullet shoot
+    public float jumpVelocity = 5f;
+    public float distanceToGround = 0.1f;
+    public GameObject bullet;
    
-    public float bulletSpeed = 100f; // <- bullet shoot
+    public float bulletSpeed = 100f;
 
-    public LayerMask groundLayer; // <- fix salto
+    public LayerMask groundLayer;
 
     private float _vInput;
     private float _hInput;
-    private bool _isJumping; // <- funcion salto
-    private CapsuleCollider _collider; // <- fix salto
-    private bool _isShooting; // <- bullet shoot
+    private bool _isJumping;
+    private CapsuleCollider _collider;
+    private bool _isShooting;
 
     private Rigidbody _rigidBody;
+
+    private GameBehaviour _gameManager; // herir jugador 1
     
     // Start is called before the first frame update
     void Start()
     {
         _rigidBody = GetComponent<Rigidbody>();
-        _collider = GetComponent<CapsuleCollider>(); // <- fix salto
+        _collider = GetComponent<CapsuleCollider>();
+
+        _gameManager = GameObject.Find("Game_Manager").GetComponent<GameBehaviour>(); // herir jugador 1
 
     }
 
@@ -40,8 +44,8 @@ public class PlayerBehaviour : MonoBehaviour
         this.transform.Translate(Vector3.forward * (_vInput * Time.deltaTime));
         this.transform.Rotate(Vector3.up * (_hInput * Time.deltaTime));
 
-        _isJumping |= Input.GetKeyDown(KeyCode.J); // <- 28/11/2024
-        _isShooting |= Input.GetKeyDown(KeyCode.Space); // <- bullet shoot
+        _isJumping |= Input.GetKeyDown(KeyCode.J); 
+        _isShooting |= Input.GetKeyDown(KeyCode.Space); 
 
     }
     
@@ -54,17 +58,14 @@ public class PlayerBehaviour : MonoBehaviour
             (_vInput * Time.fixedDeltaTime));
         _rigidBody.MoveRotation(_rigidBody.rotation * angleRot);
 
-        // funcion salto \/\/\/\/
-        if (_isJumping && IsGrounded()) // <- IsGrounded() = fix salto
+        if (_isJumping && IsGrounded()) 
         {
             _rigidBody.AddForce(Vector3.up * jumpVelocity, ForceMode.Impulse);
 
         }
 
         _isJumping = false;
-        // funcion salto /\/\/\/\
 
-        // funcion disparar \/\/\/\/
         if (_isShooting)
         {
             GameObject newBullet = Instantiate(bullet, this.transform.position +
@@ -76,11 +77,9 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         _isShooting = false;
-        // funcion disparar /\/\/\/\
 
     }
 
-    // fix salto \/\/\/\/
     private bool IsGrounded()
     {
         Vector3 capsuleBottom = new Vector3(_collider.bounds.center.x,
@@ -93,6 +92,18 @@ public class PlayerBehaviour : MonoBehaviour
         return grounded;
 
     }
-    // fix salto /\/\/\/\
 
+    // herir jugador 1 \/\/\/\/
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name == "Enemy")
+        {
+            _gameManager.HP--;
+
+        }    
+        
+    }
+    
+    // herir jugador 1 /\/\/\/\
+    
 }
