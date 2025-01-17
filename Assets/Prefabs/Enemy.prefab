@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1832569453228920585}
   - component: {fileID: 1832569453228920584}
   - component: {fileID: 1832569453228920591}
-  - component: {fileID: 1832569453228920587}
+  - component: {fileID: 3552909684956411116}
   - component: {fileID: -7663012099740556326}
   m_Layer: 0
   m_Name: Enemy
@@ -114,7 +114,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 8
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1832569453228920587
+--- !u!114 &3552909684956411116
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,6 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1752776245cadc84abd22cf805105536, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolRoute: {fileID: 0}
+  locations: []
 --- !u!195 &-7663012099740556326
 NavMeshAgent:
   m_ObjectHideFlags: 0
