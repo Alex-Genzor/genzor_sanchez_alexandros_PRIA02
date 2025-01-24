@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,11 +12,15 @@ public class EnemyBehaviour : MonoBehaviour
     
     // moviendo agentes enemigos 1 /\/\/\/\
 
+    public Transform player; // busqueda de jugador 1
+
     // moviendo agentes enemigos 2 \/\/\/\/
     private int _locationIndex = 0;
     private NavMeshAgent _agent;
     
     // moviendo agentes enemigos 2 /\/\/\/\
+
+    private int _lives = 3; // colisiones con bala 1
     
     // Start is called before the first frame update
     void Start()
@@ -25,7 +30,9 @@ public class EnemyBehaviour : MonoBehaviour
         InitialitePatrolRoute(); // moviendo agentes enemigos 1
         
         MoveToNextPatrolLocation(); // moviendo agentes enemigos 2
-        
+
+        player = GameObject.Find("Player").transform; // busqueda de jugador 1
+
     }
 
     // Update is called once per frame
@@ -72,6 +79,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if(other.name == "Player")
         {
+            _agent.destination = player.position; // busqueda de jugador 1
             Debug.Log("Enemy on sight! KILL KILL KILL! WRAHHHH!!!");
 
         }
@@ -87,5 +95,37 @@ public class EnemyBehaviour : MonoBehaviour
         }
         
     }
+
+    // colisiones con bala 1 \/\/\/\/
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.name == "Bullet(Clone)")
+        {
+            EnemyLives--;
+            Debug.Log("OUCH!");
+
+        }
+        
+    }
+    
+    public int EnemyLives
+    {
+        get { return _lives; }
+        private set
+        {
+            _lives = value;
+
+            if (_lives <= 0)
+            {
+                Destroy(this.gameObject);
+                Debug.Log("I'm down!");
+                
+            }
+
+        }
+
+    }
+    
+    // colisiones con bala 1 /\/\/\/\
 
 }
