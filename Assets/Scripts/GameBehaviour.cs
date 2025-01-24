@@ -34,6 +34,16 @@ public class GameBehaviour : MonoBehaviour
         
     }
 
+    // refactoring & DRY \/\/\/\/
+    public void UpdateScene(string updatedTxt)
+    {
+        progressTxt.text = updatedTxt;
+        Time.timeScale = 0f;
+
+    }
+
+    // refactoring & DRY /\/\/\/\
+
     public int Items
     {
         get { return _itemsCollected; }
@@ -46,9 +56,10 @@ public class GameBehaviour : MonoBehaviour
 
             if (_itemsCollected >= maxItems)
             {
-                progressTxt.text = "All items have been collected";
+                UpdateScene("All items have been collected!"); // refactoring & DRY
                 winBtn.gameObject.SetActive(true); 
-                Time.timeScale = 0f; 
+                Time.timeScale = 0f;
+
 
             } else
             {
@@ -74,7 +85,7 @@ public class GameBehaviour : MonoBehaviour
             // condicion derrota 1 \/\/\/\/
             if (_playerHP <= 0)
             {
-                progressTxt.text = "You want to have your own vendetta?";
+                UpdateScene("You want to have your own vendetta?"); // refactoring & DRY
                 lossBtn.gameObject.SetActive(true);
 
                 Time.timeScale = 0;
